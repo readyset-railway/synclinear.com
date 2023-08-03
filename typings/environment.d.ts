@@ -18,6 +18,8 @@ declare global {
             DATABASE_URL: string;
 
             DISABLE_LINEAR_METADATA: boolean;
+
+            DEPLOYED_WEBHOOK_URL: string;
         }
     }
 }
