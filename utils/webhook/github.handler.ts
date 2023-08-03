@@ -42,6 +42,8 @@ export async function githubWebhookHandler(
 ) {
     const { repository, sender, action } = body;
 
+    const disableLinearMetadata = process.env.DISABLE_LINEAR_METADATA ?? false;
+
     let sync =
         !!repository?.id && !!sender?.id
             ? await prisma.sync.findFirst({
@@ -383,8 +385,8 @@ export async function githubWebhookHandler(
                     got
                         .patch(`${issuesEndpoint}/${issue.number}`, {
                             json: {
-                                title: `[${ticketName}] ${issue.title}`,
-                                body: `${issue.body}\n\n<sub>[${ticketName}](${createdIssue.url})</sub>`
+                                title: disableLinearMetadata ? issue.title :`[${ticketName}] ${issue.title}`,
+                                body: disableLinearMetadata ? issue.body : `${issue.body}\n\n<sub>[${ticketName}](${createdIssue.url})</sub>`
                             },
                             headers: {
                                 "User-Agent": userAgentHeader,
