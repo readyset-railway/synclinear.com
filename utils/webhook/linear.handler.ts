@@ -99,6 +99,7 @@ export async function linearWebhookHandler(
     });
 
     const ticketName = `${data.team?.key ?? ""}-${data.number}`;
+    const disableLinearMetadata = process.env.DISABLE_LINEAR_METADATA ?? false;
 
     const githubKey = process.env.GITHUB_API_KEY
         ? process.env.GITHUB_API_KEY
@@ -253,8 +254,8 @@ export async function linearWebhookHandler(
 
             const createdIssueResponse = await got.post(issuesEndpoint, {
                 json: {
-                    title: `[${ticketName}] ${data.title}`,
-                    body: `${
+                    title: disableLinearMetadata ? data.title : `[${ticketName}] ${data.title}`,
+                    body: disableLinearMetadata ? (modifiedDescription ?? "") : `${
                         modifiedDescription ?? ""
                     }\n\n<sub>${getSyncFooter()} | [${ticketName}](${url})</sub>`,
                     ...(data.assigneeId &&
@@ -468,7 +469,7 @@ export async function linearWebhookHandler(
             const updatedIssueResponse = await got.patch(
                 `${GITHUB.REPO_ENDPOINT}/${syncedIssue.GitHubRepo.repoName}/issues/${syncedIssue.githubIssueNumber}`,
                 {
-                    json: { title: `[${ticketName}] ${data.title}` },
+                    json: { title: disableLinearMetadata ? data.title : `[${ticketName}] ${data.title}` },
                     headers: {
                         Authorization: githubAuthHeader,
                         "User-Agent": userAgentHeader
@@ -512,7 +513,7 @@ export async function linearWebhookHandler(
                 `${GITHUB.REPO_ENDPOINT}/${syncedIssue.GitHubRepo.repoName}/issues/${syncedIssue.githubIssueNumber}`,
                 {
                     json: {
-                        body: `${
+                        body: disableLinearMetadata ? (modifiedDescription ?? "") : `${
                             modifiedDescription ?? ""
                         }\n\n<sub>${getSyncFooter()} | [${ticketName}](${url})</sub>`
                     },
@@ -1008,8 +1009,8 @@ export async function linearWebhookHandler(
                     "User-Agent": userAgentHeader
                 },
                 json: {
-                    title: `[${ticketName}] ${data.title}`,
-                    body: `${
+                    title: disableLinearMetadata ? data.title : `[${ticketName}] ${data.title}`,
+                    body: disableLinearMetadata ? (modifiedDescription ?? "") : `${
                         modifiedDescription ?? ""
                     }\n\n<sub>${getSyncFooter()} | [${ticketName}](${url})</sub>`,
                     ...(data.assigneeId &&

@@ -16,6 +16,8 @@ declare global {
             GITHUB_REPO: string;
 
             DATABASE_URL: string;
+
+            DISABLE_LINEAR_METADATA: boolean;
         }
     }
 }
