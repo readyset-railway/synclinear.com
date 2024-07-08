@@ -28,7 +28,7 @@ export default (_, res: NextApiResponse) => {
  */
 export const upsertUser = async (
     linearClient: LinearClient,
-    githubUserId: number,
+    githubUserId: bigint,
     linearUserId: string,
     userAgentHeader: string,
     githubAuthHeader: string
@@ -201,7 +201,7 @@ export const applyLabel = async ({
     userAgentHeader
 }: {
     repoFullName: string;
-    issueNumber: number;
+    issueNumber: bigint;
     labelNames: string[];
     githubAuthHeader: string;
     userAgentHeader: string;
@@ -236,7 +236,7 @@ export const createComment = async ({
     userAgentHeader
 }: {
     repoFullName: string;
-    issueNumber: number;
+    issueNumber: bigint;
     body: string;
     githubAuthHeader: string;
     userAgentHeader: string;
