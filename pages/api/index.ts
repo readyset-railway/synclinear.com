@@ -53,6 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
         }
     } catch (e) {
+        console.log(e.message);
         return res.status(e.statusCode || 500).send({
             success: false,
             message: e.message
