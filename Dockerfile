@@ -6,6 +6,8 @@
 FROM node:18-alpine AS builder
 WORKDIR /synclinear
 
+RUN apk add --no-cache openssl
+
 COPY package.json .
 RUN corepack enable && corepack prepare
 
@@ -27,6 +29,8 @@ RUN pnpm run build
 
 FROM node:18-alpine AS runtime
 WORKDIR /synclinear
+
+RUN apk add --no-cache openssl
 
 ENV NODE_ENV production
 
