@@ -34,8 +34,8 @@ export default async function handle(
         });
 
         // Check for existing webhook
-        const force_linear_webhook_exists = process.env.FORCE_LINEAR_WEBHOOK_EXISTS;
-        if (force_linear_webhook_exists=="true") {
+        const FORCE_LINEAR_WEBHOOK_EXISTS = process.env.FORCE_LINEAR_WEBHOOK_EXISTS ?? "false";
+        if (FORCE_LINEAR_WEBHOOK_EXISTS=="true") {
             return res.status(200).json({
                 teamInDB: teamCount > 0,
                 webhookExists: true
