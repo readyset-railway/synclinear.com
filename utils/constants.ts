@@ -21,7 +21,8 @@ export const LINEAR = {
     },
     PUBLIC_QUERY_HEADERS: {
         "public-file-urls-expire-in": "86400"
-    }
+    },
+    ALLOWED_LABELS: (process.env.ALLOWED_LABELS??"").toLowerCase().split(","),
 };
 
 export const SHARED = {

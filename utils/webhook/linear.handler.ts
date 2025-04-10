@@ -187,6 +187,11 @@ export async function linearWebhookHandler(
                     throw new ApiError("Could not find label.", 403);
                 }
 
+                if (LINEAR.ALLOWED_LABELS.indexOf(label.name.toLowerCase()) == -1) {
+                    // Label is not allowed
+                    return ("Label is not in the allowed list: " + label.name);
+                }
+
                 const { createdLabel, error: createLabelError } =
                     await createLabel({
                         repoFullName,
@@ -351,6 +356,12 @@ export async function linearWebhookHandler(
                     console.log(
                         `Could not find label ${labelId} for ${ticketName}.`
                     );
+                    continue;
+                }
+
+                if (LINEAR.ALLOWED_LABELS.indexOf(label.name.toLowerCase()) == -1) {
+                    // Label is not allowed
+                    console.log(`Label is not in the allowed list: ${label.name}`);
                     continue;
                 }
 
@@ -1086,6 +1097,12 @@ export async function linearWebhookHandler(
                     console.log(
                         `Could not find label ${labelId} for ${ticketName}.`
                     );
+                    continue;
+                }
+
+                if (LINEAR.ALLOWED_LABELS.indexOf(label.name.toLowerCase()) == -1) {
+                    // Label is not allowed
+                    console.log(`Label is not in the allowed list: ${label.name}`);
                     continue;
                 }
 
