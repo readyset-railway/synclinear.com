@@ -441,6 +441,12 @@ export async function linearWebhookHandler(
                 if (!linearComment) continue;
 
                 const { comment, user } = linearComment;
+                
+                // Skip comments that contain Gerrit changes information
+                if (comment.body && comment.body.trim().startsWith(LINEAR.GERRIT_COMMENT_PREFIX)) {
+                    console.log(`Skipping syncing internal Gerrit comment for issue ${ticketName}`);
+                    continue;
+                }
 
                 const modifiedComment = await replaceMentions(
                     comment.body,
@@ -935,6 +941,12 @@ export async function linearWebhookHandler(
                 return skipReason("comment", data.issue!.id, true);
             }
 
+            // Skip comments that contain Gerrit changes information
+            if (data.body && data.body.trim().startsWith(LINEAR.GERRIT_COMMENT_PREFIX)) {
+                console.log(`Skipping syncing internal Gerrit comment for issue #${data.issue?.id}`);
+                return `Skipping syncing internal Gerrit comment for issue #${data.issue?.id}`;
+            }
+        
             // Overrides the outer-scope syncedIssue because comments do not come with teamId
             const syncedIssue = await prisma.syncedIssue.findFirst({
                 where: {
