@@ -23,6 +23,7 @@ export const LINEAR = {
         "public-file-urls-expire-in": "86400"
     },
     ALLOWED_LABELS: (process.env.ALLOWED_LABELS??"").toLowerCase().split(","),
+    GERRIT_COMMENT_PREFIX: "+++ Associated Gerrit changes",
 };
 
 export const SHARED = {
